@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Realtime Vision Analytics</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo" aria-hidden="true"></span>
+      <div>
+        <h1>Realtime Vision Analytics</h1>
+        <p class="sub">YOLO11n + ByteTrack &middot; line counting, zone occupancy, dwell time</p>
+      </div>
+    </div>
+    <form id="source-form" class="controls" autocomplete="off">
+      <span id="status" class="pill" data-state="idle"><span class="dot"></span><span id="status-text">idle</span></span>
+      <input id="source-input" type="text" placeholder="file path, webcam index or rtsp:// URL" aria-label="Video source">
+      <button type="submit" class="btn primary">Start</button>
+      <button type="button" id="stop-btn" class="btn">Stop</button>
+      <a class="btn ghost" href="/api/events/export.csv" download>Export CSV</a>
+    </form>
+  </header>
+
+  <main class="grid">
+    <section class="card video-card">
+      <div class="card-head">
+        <h2>Live annotated stream</h2>
+        <span class="muted" id="source-label">&mdash;</span>
+      </div>
+      <div class="video-wrap">
+        <img id="video" src="/stream.mjpg" alt="Annotated live video stream">
+      </div>
+    </section>
+
+    <aside class="side">
+      <div class="kpis">
+        <div class="kpi"><span class="kpi-label">In</span><span class="kpi-value" id="kpi-in">0</span></div>
+        <div class="kpi"><span class="kpi-label">Out</span><span class="kpi-value" id="kpi-out">0</span></div>
+        <div class="kpi"><span class="kpi-label">Zone occupancy</span><span class="kpi-value" id="kpi-occ">0</span></div>
+        <div class="kpi"><span class="kpi-label">Visible now</span><span class="kpi-value" id="kpi-vis">0</span></div>
+        <div class="kpi"><span class="kpi-label">Processing FPS</span><span class="kpi-value" id="kpi-fps">0.0</span></div>
+        <div class="kpi"><span class="kpi-label">Frames</span><span class="kpi-value" id="kpi-frames">0</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>Zones</h2></div>
+        <table class="table compact" aria-label="Zone statistics">
+          <thead><tr><th>Zone</th><th class="num">Inside</th><th class="num">Visits</th><th class="num">Avg dwell</th><th class="num">Max dwell</th></tr></thead>
+          <tbody id="zones-body"><tr><td colspan="5" class="muted">No zones configured</td></tr></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>Lines</h2></div>
+        <table class="table compact" aria-label="Line statistics">
+          <thead><tr><th>Line</th><th class="num">In</th><th class="num">Out</th><th>By class</th></tr></thead>
+          <tbody id="lines-body"><tr><td colspan="4" class="muted">No lines configured</td></tr></tbody>
+        </table>
+      </div>
+    </aside>
+
+    <section class="card chart-card">
+      <div class="card-head">
+        <h2>Zone occupancy over time</h2>
+        <span class="muted">last 5 minutes &middot; sampled every second</span>
+      </div>
+      <div class="chart" id="chart" role="img" aria-label="Line chart of zone occupancy over time">
+        <svg id="chart-svg" preserveAspectRatio="none"></svg>
+        <div class="tooltip" id="tooltip" hidden></div>
+      </div>
+    </section>
+
+    <section class="card events-card">
+      <div class="card-head">
+        <h2>Event log</h2>
+        <span class="muted" id="events-count">persisted to SQLite</span>
+      </div>
+      <div class="table-scroll">
+        <table class="table" aria-label="Recent events">
+          <thead><tr><th>Time (UTC)</th><th>Event</th><th>Where</th><th>Track</th><th>Class</th><th class="num">Detail</th></tr></thead>
+          <tbody id="events-body"><tr><td colspan="6" class="muted">Waiting for events&hellip;</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>REST: <a href="/docs">/docs</a> &middot; WebSocket: <code>/ws/stats</code> &middot; MJPEG: <code>/stream.mjpg</code></span>
+  </footer>
+  <script src="/static/app.js" type="module"></script>
+</body>
+</html>
