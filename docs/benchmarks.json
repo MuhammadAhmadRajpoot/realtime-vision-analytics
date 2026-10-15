@@ -1,0 +1,77 @@
+{
+  "hardware": {
+    "cpu": "Intel64 Family 6 Model 142 Stepping 9, GenuineIntel",
+    "logical_cores": 4,
+    "os": "Windows 11",
+    "gpu": "none (CPU only)"
+  },
+  "versions": {
+    "python": "3.13.14",
+    "torch": "2.14.1+cpu",
+    "onnxruntime": "1.31.0",
+    "ultralytics": "8.4.177",
+    "opencv": "5.0.0"
+  },
+  "input": {
+    "video": "data/people-detection.mp4",
+    "frames_per_round": 60,
+    "rounds": 3,
+    "frame_size": "768x432"
+  },
+  "results": [
+    {
+      "backend": "pytorch",
+      "imgsz": 320,
+      "detector_fps": 12.74,
+      "detector_ms_median": 78.5,
+      "detector_ms_mean": 86.2,
+      "detector_ms_p95": 113.8,
+      "pipeline_fps": 11.42
+    },
+    {
+      "backend": "onnx",
+      "imgsz": 320,
+      "detector_fps": 19.31,
+      "detector_ms_median": 51.8,
+      "detector_ms_mean": 49.9,
+      "detector_ms_p95": 61.6,
+      "pipeline_fps": 16.75
+    },
+    {
+      "backend": "pytorch",
+      "imgsz": 416,
+      "detector_fps": 9.17,
+      "detector_ms_median": 109.1,
+      "detector_ms_mean": 120.5,
+      "detector_ms_p95": 188.2,
+      "pipeline_fps": 8.52
+    },
+    {
+      "backend": "onnx",
+      "imgsz": 416,
+      "detector_fps": 11.96,
+      "detector_ms_median": 83.6,
+      "detector_ms_mean": 75.9,
+      "detector_ms_p95": 96.9,
+      "pipeline_fps": 11.27
+    },
+    {
+      "backend": "pytorch",
+      "imgsz": 640,
+      "detector_fps": 4.62,
+      "detector_ms_median": 216.7,
+      "detector_ms_mean": 221.8,
+      "detector_ms_p95": 374.5,
+      "pipeline_fps": 5.23
+    },
+    {
+      "backend": "onnx",
+      "imgsz": 640,
+      "detector_fps": 5.28,
+      "detector_ms_median": 189.2,
+      "detector_ms_mean": 204.3,
+      "detector_ms_p95": 328.2,
+      "pipeline_fps": 4.74
+    }
+  ]
+}

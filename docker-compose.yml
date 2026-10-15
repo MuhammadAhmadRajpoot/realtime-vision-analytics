@@ -1,0 +1,13 @@
+services:
+  rva:
+    build: .
+    image: realtime-vision-analytics:latest
+    ports:
+      - "8103:8103"
+    environment:
+      RVA_CONFIG_PATH: configs/default.yaml
+      RVA_LOG_JSON: "true"
+    volumes:
+      - ./models:/app/models   # YOLO weights cached between runs
+      - ./data:/app/data       # demo video + SQLite event log
+    restart: unless-stopped
