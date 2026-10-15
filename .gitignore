@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Runtime artefacts (downloaded or generated on first run)
+models/*
+!models/.gitkeep
+data/*
+!data/.gitkeep
+*.pt
+*.onnx
+*.mp4
+*.avi
+*.db
+*.db-wal
+*.db-shm
+runs/
+.env
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

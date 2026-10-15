@@ -1,0 +1,49 @@
+# Default scenario: hallway footfall on Intel's "people-detection.mp4" demo clip
+# (CC BY 4.0, download with `python scripts/download_demo.py`).
+#
+# Geometry is normalised to [0, 1] (x to the right, y downwards), so it does not
+# depend on the processing resolution. A line counts "in" when an object crosses
+# to the right-hand side of the direction start -> end, and "out" otherwise.
+
+source:
+  uri: data/people-detection.mp4   # webcam index (0), file path or rtsp:// / http:// URL
+  loop: true                        # restart files at the end
+  realtime: true                    # pace files at native FPS, drop frames if behind
+
+detector:
+  model: models/yolo11n.pt          # .pt (PyTorch) or .onnx (see `rva export-onnx`)
+  imgsz: 416
+  confidence: 0.35
+  iou: 0.5
+  classes: [person]
+
+tracker:
+  track_activation_threshold: 0.4
+  lost_track_buffer: 30
+  minimum_consecutive_frames: 2
+
+processing:
+  frame_skip: 0                     # process every (frame_skip + 1)-th frame
+  max_width: 960                    # downscale wider frames before inference/drawing
+  heatmap: true
+  heatmap_alpha: 0.35
+  heatmap_decay: 0.999
+
+zone_exit_timeout_s: 1.5
+
+lines:
+  # People walk in from the bottom edge; walking up across this line is "in".
+  - name: entrance
+    start: [0.92, 0.86]
+    end: [0.08, 0.86]
+  # Leaving through the side corridors counts as "out".
+  - name: west exit
+    start: [0.10, 0.95]
+    end: [0.10, 0.35]
+  - name: east exit
+    start: [0.90, 0.35]
+    end: [0.90, 0.95]
+
+zones:
+  - name: center floor
+    polygon: [[0.22, 0.52], [0.78, 0.52], [0.84, 0.82], [0.16, 0.82]]

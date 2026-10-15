@@ -1,0 +1,22 @@
+# Webcam example: count people crossing the vertical centre line.
+source:
+  uri: 0
+  loop: false
+  realtime: false
+
+detector:
+  model: models/yolo11n.pt
+  imgsz: 320
+  classes: [person]
+
+processing:
+  max_width: 640
+
+lines:
+  - name: center
+    start: [0.5, 0.0]
+    end: [0.5, 1.0]
+
+zones:
+  - name: desk
+    polygon: [[0.25, 0.4], [0.75, 0.4], [0.75, 1.0], [0.25, 1.0]]
